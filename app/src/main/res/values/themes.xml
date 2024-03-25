@@ -1,0 +1,21 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.GithubApp" parent="Theme.Material3.DayNight">
+        <item name="android:statusBarColor">@color/primary</item>
+
+    </style>
+
+    <style name="Theme.GithubApp" parent="Base.Theme.GithubApp" />
+
+    <style name="poppinsRegular">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <style name="poppinsRegular.10sp">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="poppinsRegular.18sp">
+        <item name="android:textSize">18sp</item>
+    </style>
+</resources>

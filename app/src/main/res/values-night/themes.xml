@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.GithubApp" parent="Theme.Material3.DayNight">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    </style>
+
+    <style name="poppinsRegular">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <style name="poppinsRegular.10sp">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="poppinsRegular.18sp">
+        <item name="android:textSize">18sp</item>
+    </style>
+</resources>

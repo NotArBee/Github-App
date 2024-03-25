@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Github App</string>
+    <string name="searchbar_hint">Who Are You Looking For?</string>
+</resources>

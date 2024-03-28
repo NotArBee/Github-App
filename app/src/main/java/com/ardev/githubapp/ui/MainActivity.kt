@@ -37,6 +37,11 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        val layoutManager = LinearLayoutManager(this)
+        binding.rvUser.layoutManager = layoutManager
+        val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
+        binding.rvUser.addItemDecoration(itemDecoration)
+
         mainViewModel.itemsItem.observe(this) { itemsItem ->
             setGithubUsersData(itemsItem)
         }
@@ -45,52 +50,17 @@ class MainActivity : AppCompatActivity() {
             showLoading(it)
         }
 
-        val layoutManager = LinearLayoutManager(this)
-        binding.rvUser.layoutManager = layoutManager
-        val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
-        binding.rvUser.addItemDecoration(itemDecoration)
-
-        mainViewModel.itemsItem.observe(this) {
-
-        }
         with(binding) {
             searchView.setupWithSearchBar(searchBar)
             searchView
                 .editText
                 .setOnEditorActionListener { textView, actionId, event ->
-                    var search = searchView.text
-                    searchBar.setText(search)
+                    val search = searchView.text.toString()
+                    mainViewModel.searchUsers(search)
                     searchView.hide()
-                    showUsersSearch(search.toString())
                     false
                 }
         }
-    }
-
-    private fun showUsersSearch(search: String) {
-        showLoading(true)
-        val client = ApiConfig.getApiService().getListUsers(search)
-        client.enqueue(object : Callback<GithubResponse> {
-            override fun onResponse(
-                call: Call<GithubResponse>,
-                response: Response<GithubResponse>
-            ) {
-                showLoading(false)
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        setGithubUsersData(responseBody.items)
-                    }
-                } else {
-                    Log.e(TAG, "onFailure : ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<GithubResponse>, t: Throwable) {
-                showLoading(false)
-                Log.e(TAG, "onFailure : ${t.message}")
-            }
-        })
     }
 
     private fun setGithubUsersData(users: List<ItemsItem>) {

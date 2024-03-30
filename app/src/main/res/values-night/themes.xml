@@ -13,6 +13,10 @@
         <item name="android:textSize">10sp</item>
     </style>
 
+    <style name="poppinsRegular.14sp">
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="poppinsRegular.18sp">
         <item name="android:textSize">18sp</item>
     </style>

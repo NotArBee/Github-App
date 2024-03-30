@@ -1,15 +1,26 @@
-package com.ardev.githubuser.ui
+package com.ardev.githubapp.ui.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ardev.githubapp.data.response.ItemsItem
 import com.ardev.githubapp.databinding.UserCardBinding
+import com.ardev.githubapp.ui.detail.DetailUserActivity
+import com.ardev.githubapp.ui.main.MainActivity
 import com.bumptech.glide.Glide
 
-class UsersAdapter : ListAdapter<ItemsItem, UsersAdapter.MyViewHolder>(DIFF_CALLBACK){
+class UsersAdapter : ListAdapter<ItemsItem, UsersAdapter.MyViewHolder>(DIFF_CALLBACK) {
+
+    interface OnUserItemClickListener {
+        fun onUserItemClicked(user: ItemsItem)
+    }
+
+    private var onUserItemClickListener: OnUserItemClickListener? = null
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ItemsItem>() {
@@ -23,7 +34,12 @@ class UsersAdapter : ListAdapter<ItemsItem, UsersAdapter.MyViewHolder>(DIFF_CALL
         }
     }
 
-    class MyViewHolder(private val userCardBinding: UserCardBinding) : RecyclerView.ViewHolder(userCardBinding.root){
+    fun setOnUserItemClickListener(listener: OnUserItemClickListener) {
+        onUserItemClickListener = listener
+    }
+
+    class MyViewHolder(private val userCardBinding: UserCardBinding) :
+        RecyclerView.ViewHolder(userCardBinding.root) {
         fun bind(user: ItemsItem) {
             Glide.with(itemView.context)
                 .load(user.avatarUrl)
@@ -33,14 +49,19 @@ class UsersAdapter : ListAdapter<ItemsItem, UsersAdapter.MyViewHolder>(DIFF_CALL
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding = UserCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            UserCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val user = getItem(position)
         holder.bind(user)
-    }
+        holder.itemView.setOnClickListener {
+            onUserItemClickListener?.onUserItemClicked(user)
+        }
 
+
+    }
 
 }

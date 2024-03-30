@@ -1,7 +1,7 @@
-package com.ardev.githubapp.ui
+package com.ardev.githubapp.ui.main
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,14 +9,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ardev.githubapp.data.response.GithubResponse
 import com.ardev.githubapp.data.response.ItemsItem
-import com.ardev.githubapp.data.retrofit.ApiConfig
 import com.ardev.githubapp.databinding.ActivityMainBinding
-import com.ardev.githubuser.ui.UsersAdapter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.ardev.githubapp.ui.adapter.UsersAdapter
+import com.ardev.githubapp.ui.detail.DetailUserActivity
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -39,8 +35,10 @@ class MainActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.rvUser.layoutManager = layoutManager
+        binding.rvUser.setHasFixedSize(true)
         val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
         binding.rvUser.addItemDecoration(itemDecoration)
+
 
         mainViewModel.itemsItem.observe(this) { itemsItem ->
             setGithubUsersData(itemsItem)
@@ -64,9 +62,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setGithubUsersData(users: List<ItemsItem>) {
+        val listUser = ArrayList<ItemsItem>()
+        for (i in users) {
+            listUser.clear()
+            listUser.addAll(users)
+        }
+
         val adapter = UsersAdapter()
         adapter.submitList(users)
         binding.rvUser.adapter = adapter
+
+
+        adapter.setOnUserItemClickListener(object : UsersAdapter.OnUserItemClickListener {
+            override fun onUserItemClicked(user: ItemsItem) {
+                val intentDetail = Intent(this@MainActivity, DetailUserActivity::class.java)
+                intentDetail.putExtra(DetailUserActivity.EXTRA_USER, user)
+                startActivity(intentDetail)
+            }
+        })
     }
 
     private fun showLoading(isLoading: Boolean) {

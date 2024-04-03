@@ -3,6 +3,7 @@ package com.ardev.githubapp.ui.splashscreen
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -21,8 +22,9 @@ class SplashActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        @Suppress("DEPRECATION")
-        Handler().postDelayed({ goToMainActivity() }, 4500)
+        Handler(Looper.getMainLooper()).postDelayed({
+            goToMainActivity()
+        }, 4500)
     }
 
     fun goToMainActivity() {

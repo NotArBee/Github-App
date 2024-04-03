@@ -4,20 +4,21 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
+import com.ardev.githubapp.R
 import com.ardev.githubapp.data.response.DetailUserResponse
 import com.ardev.githubapp.data.response.ItemsItem
 import com.ardev.githubapp.databinding.ActivityDetailUserBinding
+import com.ardev.githubapp.ui.adapter.SectionPagerAdapter
 import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailUserActivity : AppCompatActivity() {
-
-    companion object {
-        const val EXTRA_USER = "extra_user"
-    }
 
     private lateinit var binding: ActivityDetailUserBinding
     private val userDetailViewModel by viewModels<DetailViewModel>()
@@ -44,11 +45,18 @@ class DetailUserActivity : AppCompatActivity() {
             setUserData(userDetail)
         }
 
+        val sectionPagerAdapter = SectionPagerAdapter(this)
+        val viewPager: ViewPager2 = binding.viewPager
+        viewPager.adapter = sectionPagerAdapter
+        val tabs: TabLayout = binding.tabs
+        TabLayoutMediator(tabs, viewPager) { tab, position ->
+            tab.text = resources.getString(TAB_TITLES[position])
+        }.attach()
+        supportActionBar?.elevation = 0f
+
         userDetailViewModel.isLoading.observe(this) {
             showLoading(it)
         }
-
-
     }
 
     private fun setUserData(username: DetailUserResponse) {
@@ -65,5 +73,15 @@ class DetailUserActivity : AppCompatActivity() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    companion object {
+        const val EXTRA_USER = "extra_user"
+
+        @StringRes
+        val TAB_TITLES = intArrayOf(
+            R.string.tab_text_1,
+            R.string.tab_text_2
+        )
     }
 }

@@ -9,6 +9,7 @@
 
     <style name="poppinsRegular">
         <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="poppinsRegular.10sp">

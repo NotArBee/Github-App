@@ -34,57 +34,66 @@ class DetailUserActivity : AppCompatActivity() {
             insets
         }
 
+        // Inisialisasi SectionPagerAdapter dan ViewPager
         val sectionPagerAdapter = SectionPagerAdapter(this)
         val viewPager: ViewPager2 = binding.viewPager
+
+        // Mengambil username dari intent atau string ekstra
+        val username = intent.getStringExtra(MainActivity.EXTRA_DATA) ?: ""
+
+        // Mengatur username ke SectionPagerAdapter
+        sectionPagerAdapter.username = username
+
+        // Mengatur adapter ke ViewPager
         viewPager.adapter = sectionPagerAdapter
+
+        // Mengatur TabLayout
         val tabs: TabLayout = binding.tabs
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
-        supportActionBar?.elevation = 0f
 
-        val userIntent = intent.extras
-        if (userIntent != null) {
-            val userLogin = userIntent.getString(MainActivity.EXTRA_DATA)
-            userDetailViewModel.showUserDetail(userLogin!!)
-        } else {
-            Log.e("DetailUserActivity", "Error in getting parcelable intent")
-        }
-
+        // Mengamati perubahan pada data pengguna
         userDetailViewModel.detailUser.observe(this) { userDetail ->
             setUserData(userDetail)
-            var username = userDetail.login
-            // Set data username pada adapter
-            sectionPagerAdapter.username = username ?: "Gagal"
         }
 
+        // Mengamati perubahan pada status loading
         userDetailViewModel.isLoading.observe(this) {
             showLoading(it)
         }
+
+        // Meminta ViewModel untuk menampilkan detail pengguna
+        val userLogin = intent.getStringExtra(MainActivity.EXTRA_DATA)
+        userDetailViewModel.showUserDetail(userLogin ?: "")
     }
 
-
-    private fun setUserData(username: DetailUserResponse) {
+    // Metode untuk mengatur data pengguna pada tampilan
+    private fun setUserData(user: DetailUserResponse) {
         binding.apply {
             Glide.with(this@DetailUserActivity)
-                .load(username.avatarUrl)
+                .load(user.avatarUrl)
                 .into(ivUserProfile)
-            tvDetailUserName.text = username.login
-            tvDetailRealName.text = username.name
-            tvFollowers.text = "${username.followers.toString()} Followers"
-            tvFollowing.text = "${username.following.toString()} Following"
+            tvDetailUserName.text = user.login
+            tvDetailRealName.text = user.name
+            tvFollowers.text = "${user.followers.toString()} Followers"
+            tvFollowing.text = "${user.following.toString()} Following"
         }
     }
 
+    // Metode untuk menampilkan atau menyembunyikan status loading
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
+    // Daftar judul tab
     companion object {
         @StringRes
         val TAB_TITLES = intArrayOf(
             R.string.tab_text_1,
             R.string.tab_text_2
         )
+
+        const val EXTRA_FRAGMENT = "extra_fragment"
     }
 }

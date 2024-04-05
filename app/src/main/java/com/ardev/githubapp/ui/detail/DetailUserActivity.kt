@@ -14,6 +14,7 @@ import com.ardev.githubapp.data.response.DetailUserResponse
 import com.ardev.githubapp.data.response.ItemsItem
 import com.ardev.githubapp.databinding.ActivityDetailUserBinding
 import com.ardev.githubapp.ui.adapter.SectionPagerAdapter
+import com.ardev.githubapp.ui.main.MainActivity
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -33,18 +34,6 @@ class DetailUserActivity : AppCompatActivity() {
             insets
         }
 
-        @Suppress("DEPRECATION")
-        val user = intent.getParcelableExtra<ItemsItem>(EXTRA_USER)
-        if (user != null) {
-            userDetailViewModel.showUserDetail(user.login)
-        } else {
-            Log.e("DetailUserActivity", "Error di intent parcelable")
-        }
-
-        userDetailViewModel.detailUser.observe(this) { userDetail ->
-            setUserData(userDetail)
-        }
-
         val sectionPagerAdapter = SectionPagerAdapter(this)
         val viewPager: ViewPager2 = binding.viewPager
         viewPager.adapter = sectionPagerAdapter
@@ -54,10 +43,26 @@ class DetailUserActivity : AppCompatActivity() {
         }.attach()
         supportActionBar?.elevation = 0f
 
+        val userIntent = intent.extras
+        if (userIntent != null) {
+            val userLogin = userIntent.getString(MainActivity.EXTRA_DATA)
+            userDetailViewModel.showUserDetail(userLogin!!)
+        } else {
+            Log.e("DetailUserActivity", "Error in getting parcelable intent")
+        }
+
+        userDetailViewModel.detailUser.observe(this) { userDetail ->
+            setUserData(userDetail)
+            var username = userDetail.login
+            // Set data username pada adapter
+            sectionPagerAdapter.username = username ?: "Gagal"
+        }
+
         userDetailViewModel.isLoading.observe(this) {
             showLoading(it)
         }
     }
+
 
     private fun setUserData(username: DetailUserResponse) {
         binding.apply {
@@ -76,8 +81,6 @@ class DetailUserActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_USER = "extra_user"
-
         @StringRes
         val TAB_TITLES = intArrayOf(
             R.string.tab_text_1,

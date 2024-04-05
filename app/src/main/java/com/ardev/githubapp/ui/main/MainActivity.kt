@@ -16,8 +16,8 @@ import com.ardev.githubapp.ui.detail.DetailUserActivity
 
 class MainActivity : AppCompatActivity() {
     companion object {
-        private const val TAG = "MainActivity"
-        private const val USERNAME = "Arya"
+        const val EXTRA_DATA = "extra_data"
+
     }
 
     private lateinit var binding: ActivityMainBinding
@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+
 
         val layoutManager = LinearLayoutManager(this)
         binding.rvUser.layoutManager = layoutManager
@@ -76,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         adapter.setOnUserItemClickListener(object : UsersAdapter.OnUserItemClickListener {
             override fun onUserItemClicked(user: ItemsItem) {
                 val intentDetail = Intent(this@MainActivity, DetailUserActivity::class.java)
-                intentDetail.putExtra(DetailUserActivity.EXTRA_USER, user)
+                intentDetail.putExtra(EXTRA_DATA, user.login)
                 startActivity(intentDetail)
             }
         })

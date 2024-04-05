@@ -1,14 +1,9 @@
 package com.ardev.githubapp.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.ardev.githubapp.R
 import com.ardev.githubapp.data.response.DetailUserResponse
-import com.ardev.githubapp.databinding.FragmentFollowBinding
 import com.ardev.githubapp.databinding.UserCardBinding
 import com.bumptech.glide.Glide
 

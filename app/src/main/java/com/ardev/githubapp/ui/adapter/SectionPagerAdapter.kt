@@ -16,10 +16,11 @@ class SectionPagerAdapter(activity : AppCompatActivity) : FragmentStateAdapter(a
 
     override fun createFragment(position: Int): Fragment {
         val fragment = FollowFragment()
-        fragment.arguments = Bundle().apply {
+        val args = Bundle().apply {
             putInt(FollowFragment.ARG_SECTION_NUMBER, position + 1)
             putString(FollowFragment.ARG_USERNAME, username)
         }
+        fragment.arguments = args
         return fragment
     }
 }

@@ -2,6 +2,7 @@ package com.ardev.githubapp.data.retrofit
 
 import com.ardev.githubapp.data.response.DetailUserResponse
 import com.ardev.githubapp.data.response.GithubResponse
+import com.ardev.githubapp.data.response.ItemsItem
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers

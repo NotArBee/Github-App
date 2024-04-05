@@ -7,61 +7,64 @@ import android.view.View
 import android.view.ViewGroup
 import com.ardev.githubapp.databinding.FragmentFollowBinding
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ardev.githubapp.R
-import com.ardev.githubapp.data.response.ItemsItem
 import com.ardev.githubapp.ui.adapter.ListFollowAdapter
-import com.ardev.githubapp.ui.detail.DetailUserActivity
 import com.ardev.githubapp.ui.detail.DetailViewModel
+import com.ardev.githubapp.ui.main.MainActivity
 
 class FollowFragment : Fragment() {
 
     private var _binding: FragmentFollowBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: DetailViewModel
+    private var position: Int = 0
+    private var username: String? = null
 
-    @Suppress("UNREACHABLE_CODE")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFollowBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val githubUser = arguments?.getString(MainActivity.EXTRA_DATA)
+        username = arguments?.getString(ARG_USERNAME)
+
         viewModel = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
         )[DetailViewModel::class.java]
 
-        @Suppress("DEPRECATION")
-        val gitHubUser: ItemsItem =
-            requireActivity().intent.getParcelableExtra(DetailUserActivity.EXTRA_USER)!!
-        val layoutManager = LinearLayoutManager(requireActivity())
-        binding.rvFollow.layoutManager = layoutManager
-        binding.rvFollow.setHasFixedSize(true)
-        val itemDecoration = DividerItemDecoration(requireActivity(), layoutManager.orientation)
-
-        val tabTitle = arguments?.getString(DetailUserActivity.TAB_TITLES.toString())
-        if (tabTitle == getString(R.string.tab_text_1)) {
-            viewModel.getFollowersList(gitHubUser.login)
-        } else if (tabTitle == getString(R.string.tab_text_2)) {
-            viewModel.getFollowingList(gitHubUser.login)
-        }
+        binding.rvFollow.layoutManager = LinearLayoutManager(requireActivity())
 
         viewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
 
         viewModel.listFollow.observe(viewLifecycleOwner) { listFollow ->
-            val adapter = ListFollowAdapter(listFollow)
-            binding.apply {
-                rvFollow.adapter = adapter
+            listFollow?.let { users ->
+                binding.rvFollow.layoutManager = LinearLayoutManager(requireActivity())
+                val adapter = ListFollowAdapter(users)
+                binding.rvFollow.adapter = adapter
             }
         }
-    }
 
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        arguments?.let {
+            position = it.getInt(ARG_SECTION_NUMBER)
+            username = it.getString(ARG_USERNAME)
+        }
+
+        if (!githubUser.isNullOrEmpty()) {
+            if (position == 1) {
+                viewModel.getFollowersList(username!!)
+            } else {
+                viewModel.getFollowingList(username!!)
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -69,8 +72,16 @@ class FollowFragment : Fragment() {
         _binding = null
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
     companion object {
         const val ARG_SECTION_NUMBER = "section_number"
         const val ARG_USERNAME = "username"
     }
 }
+
+
+
+

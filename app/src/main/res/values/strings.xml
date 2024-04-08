@@ -10,4 +10,7 @@
     <string name="list_layout">List Layout</string>
     <string name="grid_layout">Grid Layout</string>
     <string name="setting">Setting</string>
+    <string name="insertDatabase">Has been add to your favorite user</string>
+    <string name="deleteDatabase">Has been delete in your favorite user</string>
+    <string name="undo">Undo</string>
 </resources>

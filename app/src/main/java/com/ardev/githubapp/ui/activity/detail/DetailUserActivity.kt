@@ -2,7 +2,6 @@ package com.ardev.githubapp.ui.activity.detail
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -18,6 +17,7 @@ import com.ardev.githubapp.ui.adapter.SectionPagerAdapter
 import com.ardev.githubapp.ui.activity.main.MainActivity
 import com.ardev.githubapp.ui.helper.ViewModelFactory
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -25,9 +25,8 @@ class DetailUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailUserBinding
     private lateinit var userDetailViewModel: DetailViewModel
-    private var fabFavorite: Boolean = false
+    private var isFavorite: Boolean = false
     private var favoriteUser: FavoriteUser? = null
-    private var detailUser = DetailUserResponse()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +38,7 @@ class DetailUserActivity : AppCompatActivity() {
             insets
         }
 
+        @Suppress("DEPRECATION")
         val user = intent.getParcelableExtra<ItemsItem>(MainActivity.EXTRA_DATA) as ItemsItem
 
         userDetailViewModel = obtainViewModel(this)
@@ -67,16 +67,48 @@ class DetailUserActivity : AppCompatActivity() {
 
         favoriteUser = FavoriteUser(user.login.toString(), user.avatarUrl)
 
+        userDetailViewModel.getFavoriteUser().observe(this) {
+            isFavorite = it.contains(favoriteUser)
+            if (isFavorite) {
+                @Suppress("DEPRECATION")
+                binding.fabFavorite.setImageDrawable(resources.getDrawable(R.drawable.favorite_icon_blue))
+            } else {
+                @Suppress("DEPRECATION")
+                binding.fabFavorite.setImageDrawable(resources.getDrawable(R.drawable.favorite_icon_notfill))
+            }
+
+        }
+
         binding.fabFavorite.setOnClickListener {
-            userDetailViewModel.insert(favoriteUser!!)
+            if (isFavorite) {
+                userDetailViewModel.delete(favoriteUser!!)
+                Snackbar.make(
+                    binding.root,
+                    StringBuilder(user.login + " ").append(resources.getString(R.string.deleteDatabase)),
+                    Snackbar.LENGTH_LONG
+                    ).setAction(
+                        resources.getString(R.string.undo)
+                    ) {
+                        userDetailViewModel.insert(favoriteUser!!)
+                }.show()
+            } else {
+                userDetailViewModel.insert(favoriteUser!!)
+                Snackbar.make(
+                    binding.root,
+                    StringBuilder(user.login + " ").append(resources.getString(R.string.insertDatabase)),
+                    Snackbar.LENGTH_LONG
+                ).setAction(
+                    resources.getString(R.string.undo)
+                ) {
+                    userDetailViewModel.delete(favoriteUser!!)
+                }.show()
+            }
         }
     }
 
     private fun setUserData(user: DetailUserResponse) {
         binding.apply {
-            Glide.with(this@DetailUserActivity)
-                .load(user.avatarUrl)
-                .into(ivUserProfile)
+            Glide.with(this@DetailUserActivity).load(user.avatarUrl).into(ivUserProfile)
             tvDetailUserName.text = user.login
             tvDetailRealName.text = user.name
             tvFollowers.text = "${user.followers.toString()} Followers"
@@ -96,10 +128,7 @@ class DetailUserActivity : AppCompatActivity() {
     companion object {
         @StringRes
         val TAB_TITLES = intArrayOf(
-            R.string.tab_text_1,
-            R.string.tab_text_2
+            R.string.tab_text_1, R.string.tab_text_2
         )
-
-        const val EXTRA_FAVUSER = "extra_favuser"
     }
 }

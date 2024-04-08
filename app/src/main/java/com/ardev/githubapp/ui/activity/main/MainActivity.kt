@@ -1,7 +1,8 @@
-package com.ardev.githubapp.ui.main
+package com.ardev.githubapp.ui.activity.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,10 +10,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ardev.githubapp.R
 import com.ardev.githubapp.data.response.ItemsItem
 import com.ardev.githubapp.databinding.ActivityMainBinding
 import com.ardev.githubapp.ui.adapter.UsersAdapter
-import com.ardev.githubapp.ui.detail.DetailUserActivity
+import com.ardev.githubapp.ui.activity.detail.DetailUserActivity
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -32,8 +34,6 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
 
         val layoutManager = LinearLayoutManager(this)
         binding.rvUser.layoutManager = layoutManager
@@ -61,6 +61,11 @@ class MainActivity : AppCompatActivity() {
                     false
                 }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     private fun setGithubUsersData(users: List<ItemsItem>) {

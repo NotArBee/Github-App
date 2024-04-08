@@ -23,10 +23,6 @@ class FavoriteUserRepository(application: Application) {
         exeutorService.execute { mFavoriteUserDao.insert(favUser) }
     }
 
-    fun update(favUser: FavoriteUser) {
-        exeutorService.execute { mFavoriteUserDao.update(favUser) }
-    }
-
     fun delete(favUser: FavoriteUser) {
         exeutorService.execute { mFavoriteUserDao.delete(favUser) }
     }

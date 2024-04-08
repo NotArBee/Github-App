@@ -1,20 +1,21 @@
-package com.ardev.githubapp.ui.detail
+package com.ardev.githubapp.ui.activity.detail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.ardev.githubapp.R
 import com.ardev.githubapp.data.response.DetailUserResponse
-import com.ardev.githubapp.data.response.ItemsItem
+import com.ardev.githubapp.database.FavoriteUser
 import com.ardev.githubapp.databinding.ActivityDetailUserBinding
 import com.ardev.githubapp.ui.adapter.SectionPagerAdapter
-import com.ardev.githubapp.ui.main.MainActivity
+import com.ardev.githubapp.ui.activity.main.MainActivity
+import com.ardev.githubapp.ui.helper.ViewModelFactory
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -22,7 +23,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 class DetailUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailUserBinding
-    private val userDetailViewModel by viewModels<DetailViewModel>()
+
+    //    private val userDetailViewModel by viewModels<DetailViewModel>(){
+//        ViewModelFactory.getInstance(application)
+//    }
+    private lateinit var userDetailViewModel: DetailViewModel
+    private var fabFavorite: Boolean = false
+    private var favoriteUser: FavoriteUser? = null
+    private var favUser: FavoriteUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,41 +42,44 @@ class DetailUserActivity : AppCompatActivity() {
             insets
         }
 
-        // Inisialisasi SectionPagerAdapter dan ViewPager
+        userDetailViewModel = obtainViewModel(this)
+
         val sectionPagerAdapter = SectionPagerAdapter(this)
         val viewPager: ViewPager2 = binding.viewPager
 
-        // Mengambil username dari intent atau string ekstra
         val username = intent.getStringExtra(MainActivity.EXTRA_DATA) ?: ""
 
-        // Mengatur username ke SectionPagerAdapter
         sectionPagerAdapter.username = username
 
-        // Mengatur adapter ke ViewPager
         viewPager.adapter = sectionPagerAdapter
 
-        // Mengatur TabLayout
         val tabs: TabLayout = binding.tabs
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
 
-        // Mengamati perubahan pada data pengguna
         userDetailViewModel.detailUser.observe(this) { userDetail ->
             setUserData(userDetail)
         }
 
-        // Mengamati perubahan pada status loading
         userDetailViewModel.isLoading.observe(this) {
             showLoading(it)
         }
 
-        // Meminta ViewModel untuk menampilkan detail pengguna
         val userLogin = intent.getStringExtra(MainActivity.EXTRA_DATA)
         userDetailViewModel.showUserDetail(userLogin ?: "")
+
+//
+//        favUser = intent.getParcelableExtra(EXTRA_FAVUSER)
+////        if (favUser != null) {
+////
+////        }
+//
+//        binding.fabFavorite.setOnClickListener{
+//            userDetailViewModel.insert(favUser as FavoriteUser)
+//        }
     }
 
-    // Metode untuk mengatur data pengguna pada tampilan
     private fun setUserData(user: DetailUserResponse) {
         binding.apply {
             Glide.with(this@DetailUserActivity)
@@ -81,12 +92,15 @@ class DetailUserActivity : AppCompatActivity() {
         }
     }
 
-    // Metode untuk menampilkan atau menyembunyikan status loading
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    // Daftar judul tab
+    private fun obtainViewModel(activity: AppCompatActivity): DetailViewModel {
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory)[DetailViewModel::class.java]
+    }
+
     companion object {
         @StringRes
         val TAB_TITLES = intArrayOf(
@@ -94,6 +108,6 @@ class DetailUserActivity : AppCompatActivity() {
             R.string.tab_text_2
         )
 
-        const val EXTRA_FRAGMENT = "extra_fragment"
+        const val EXTRA_FAVUSER = "extra_favuser"
     }
 }

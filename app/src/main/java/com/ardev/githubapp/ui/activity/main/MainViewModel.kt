@@ -1,4 +1,4 @@
-package com.ardev.githubapp.ui.main
+package com.ardev.githubapp.ui.activity.main
 
 import android.util.Log
 import androidx.lifecycle.LiveData

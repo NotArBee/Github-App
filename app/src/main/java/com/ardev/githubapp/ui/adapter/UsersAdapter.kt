@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ardev.githubapp.data.response.ItemsItem
 import com.ardev.githubapp.databinding.UserCardBinding
-import com.ardev.githubapp.ui.detail.DetailUserActivity
-import com.ardev.githubapp.ui.main.MainActivity
+import com.ardev.githubapp.ui.activity.detail.DetailUserActivity
+import com.ardev.githubapp.ui.activity.main.MainActivity
 import com.bumptech.glide.Glide
 
 class UsersAdapter : ListAdapter<ItemsItem, UsersAdapter.MyViewHolder>(DIFF_CALLBACK) {

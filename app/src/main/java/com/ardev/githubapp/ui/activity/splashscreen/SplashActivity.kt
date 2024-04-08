@@ -1,4 +1,4 @@
-package com.ardev.githubapp.ui.splashscreen
+package com.ardev.githubapp.ui.activity.splashscreen
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.ardev.githubapp.R
-import com.ardev.githubapp.ui.main.MainActivity
+import com.ardev.githubapp.ui.activity.main.MainActivity
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

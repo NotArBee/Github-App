@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:padding="16dp"
-    tools:context=".ui.detail.DetailUserActivity">
+    tools:context=".ui.activity.detail.DetailUserActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -106,7 +106,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="25dp"
             android:contentDescription="@string/fab_desc"
-            android:src="@drawable/favorite_icon"/>
+            android:src="@drawable/favorite_icon_blue"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.facebook.shimmer.ShimmerFrameLayout

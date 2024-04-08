@@ -2,7 +2,7 @@ package com.ardev.githubapp.ui.activity.detail
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.ardev.githubapp.R
 import com.ardev.githubapp.data.response.DetailUserResponse
+import com.ardev.githubapp.data.response.ItemsItem
 import com.ardev.githubapp.database.FavoriteUser
 import com.ardev.githubapp.databinding.ActivityDetailUserBinding
 import com.ardev.githubapp.ui.adapter.SectionPagerAdapter
@@ -23,14 +24,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 class DetailUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailUserBinding
-
-    //    private val userDetailViewModel by viewModels<DetailViewModel>(){
-//        ViewModelFactory.getInstance(application)
-//    }
     private lateinit var userDetailViewModel: DetailViewModel
     private var fabFavorite: Boolean = false
     private var favoriteUser: FavoriteUser? = null
-    private var favUser: FavoriteUser? = null
+    private var detailUser = DetailUserResponse()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,14 +39,14 @@ class DetailUserActivity : AppCompatActivity() {
             insets
         }
 
+        val user = intent.getParcelableExtra<ItemsItem>(MainActivity.EXTRA_DATA) as ItemsItem
+
         userDetailViewModel = obtainViewModel(this)
 
         val sectionPagerAdapter = SectionPagerAdapter(this)
         val viewPager: ViewPager2 = binding.viewPager
 
-        val username = intent.getStringExtra(MainActivity.EXTRA_DATA) ?: ""
-
-        sectionPagerAdapter.username = username
+        sectionPagerAdapter.username = user.login.toString()
 
         viewPager.adapter = sectionPagerAdapter
 
@@ -66,18 +63,13 @@ class DetailUserActivity : AppCompatActivity() {
             showLoading(it)
         }
 
-        val userLogin = intent.getStringExtra(MainActivity.EXTRA_DATA)
-        userDetailViewModel.showUserDetail(userLogin ?: "")
+        userDetailViewModel.showUserDetail(user.login.toString())
 
-//
-//        favUser = intent.getParcelableExtra(EXTRA_FAVUSER)
-////        if (favUser != null) {
-////
-////        }
-//
-//        binding.fabFavorite.setOnClickListener{
-//            userDetailViewModel.insert(favUser as FavoriteUser)
-//        }
+        favoriteUser = FavoriteUser(user.login.toString(), user.avatarUrl)
+
+        binding.fabFavorite.setOnClickListener {
+            userDetailViewModel.insert(favoriteUser!!)
+        }
     }
 
     private fun setUserData(user: DetailUserResponse) {

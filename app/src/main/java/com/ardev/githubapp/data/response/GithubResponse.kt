@@ -20,50 +20,50 @@ data class GithubResponse(
 data class ItemsItem(
 
 	@field:SerializedName("avatar_url")
-	val avatarUrl: String,
+	val avatarUrl: String? = null,
 
 	@field:SerializedName("id")
-	val id: Int,
+	val id: Int? = null,
 
 	@field:SerializedName("login")
-	val login: String,
+	val login: String? = null,
 
 	@field:SerializedName("followers")
-	val followers: Int,
+	val followers: Int? = null,
 
 	@field:SerializedName("following")
-	val following: Int,
+	val following: Int? = null,
 
 	@field:SerializedName("name")
-	val name: String,
+	val name: String? = null,
 
 	@field:SerializedName("following_url")
-	val followingUrl: String,
+	val followingUrl: String? = null,
 
 	@field:SerializedName("followers_url")
-	val followersUrl: String
+	val followersUrl: String? = null
 ) : Parcelable
 
 data class DetailUserResponse(
 
 	@field:SerializedName("following_url")
-	val followingUrl: String,
+	val followingUrl: String? = null,
 
 	@field:SerializedName("login")
-	val login: String,
+	val login: String? = null,
 
 	@field:SerializedName("followers_url")
-	val followersUrl: String,
+	val followersUrl: String? = null,
 
 	@field:SerializedName("followers")
-	val followers: Int,
+	val followers: Int? = null,
 
 	@field:SerializedName("avatar_url")
-	val avatarUrl: String,
+	val avatarUrl: String? = null,
 
 	@field:SerializedName("following")
-	val following: Int,
+	val following: Int? = null,
 
 	@field:SerializedName("name")
-	val name: String,
+	val name: String? = null
 )

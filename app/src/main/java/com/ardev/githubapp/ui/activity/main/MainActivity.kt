@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         adapter.setOnUserItemClickListener(object : UsersAdapter.OnUserItemClickListener {
             override fun onUserItemClicked(user: ItemsItem) {
                 val intentDetail = Intent(this@MainActivity, DetailUserActivity::class.java)
-                intentDetail.putExtra(EXTRA_DATA, user.login)
+                intentDetail.putExtra(EXTRA_DATA, user)
                 startActivity(intentDetail)
             }
         })

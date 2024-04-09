@@ -13,11 +13,10 @@
 
         <TextView
             android:id="@+id/tv_userName"
-            style="@style/poppinsRegular.18sp"
+            style="@style/bgColor"
             android:layout_width="307dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:background="@color/grey"
             android:maxLines="1"
             app:layout_constraintBottom_toBottomOf="@+id/iv_user"
             app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +33,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/grey" />
+            android:background="@color/darkShimmer"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

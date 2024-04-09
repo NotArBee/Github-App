@@ -16,4 +16,5 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
+    <string name="tab_layout_following_dan_followers">Tab layout Following dan followers</string>
 </resources>

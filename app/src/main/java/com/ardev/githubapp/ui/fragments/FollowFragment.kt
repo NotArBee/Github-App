@@ -15,7 +15,7 @@ class FollowFragment : Fragment() {
     private var _binding: FragmentFollowBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: DetailViewModel
-    private var position: Int = 0
+    private var position: Int = 1
     lateinit var username: String
 
     override fun onCreateView(
@@ -24,6 +24,19 @@ class FollowFragment : Fragment() {
     ): View {
         _binding = FragmentFollowBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadData()
+    }
+
+    private fun loadData() {
+        if (position == 1) {
+            viewModel.getFollowersList(username)
+        } else {
+            viewModel.getFollowingList(username)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,24 +50,18 @@ class FollowFragment : Fragment() {
             showLoading(it)
         }
 
-        viewModel.listFollow.observe(viewLifecycleOwner) { listFollow ->
-            listFollow?.let { users ->
-                binding.rvFollow.layoutManager = LinearLayoutManager(requireActivity())
-                val adapter = ListFollowAdapter(users)
-                binding.rvFollow.adapter = adapter
-            }
-        }
 
         arguments?.let {
             position = it.getInt(ARG_SECTION_NUMBER)
             username = it.getString(ARG_USERNAME).toString()
         }
 
-        if (position == 1) {
-            viewModel.getFollowersList(username)
-        } else {
-            viewModel.getFollowingList(username)
-
+        viewModel.listFollow.observe(viewLifecycleOwner) { listFollow ->
+            listFollow?.let { users ->
+                binding.rvFollow.layoutManager = LinearLayoutManager(requireActivity())
+                val adapter = ListFollowAdapter(users)
+                binding.rvFollow.adapter = adapter
+            }
         }
     }
 

@@ -3,6 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#7F000000</color>
+    <color name="darkShimmer">#7FB3B1B1</color>
     <color name="primary">#19253d</color>
     <color name="testing">#FF0000</color>
 </resources>

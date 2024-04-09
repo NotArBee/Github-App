@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:padding="16dp"
     tools:context=".ui.activity.detail.DetailUserActivity">
 
@@ -17,40 +17,58 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_detailRealName">
+        app:layout_constraintTop_toBottomOf="@+id/tv_detailUserName">
 
-        <TextView
-            android:id="@+id/tv_followers"
-            style="@style/poppinsRegular.14sp"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="center"
-            tools:text="30 Followers" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_following"
-            style="@style/poppinsRegular.14sp"
+            <TextView
+                android:id="@+id/tv_followers"
+                style="@style/poppinsRegular.18sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                tools:text="30" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/poppinsRegular.14sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="-8dp"
+                android:text="@string/followers"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="center"
-            tools:text="30 Following" />
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/tv_following"
+                style="@style/poppinsRegular.18sp"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                tools:text="30" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/poppinsRegular.14sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="-8dp"
+                android:text="@string/following"/>
+        </LinearLayout>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_detailRealName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_italic"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_detailUserName"
-        tools:text="Yanto Bin Slamet" />
 
     <TextView
         android:id="@+id/tv_detailUserName"
@@ -64,39 +82,11 @@
         app:layout_constraintTop_toBottomOf="@+id/ivUserProfile"
         tools:text="YantoPro01" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/ivUserProfile"
-        android:layout_width="149dp"
-        android:layout_height="135dp"
-        app:civ_border_color="@color/black"
-        app:civ_border_width="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:src="@tools:sample/avatars" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabTextColor="@color/black"
-        android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        tools:layout_editor_absoluteX="16dp" />
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabs" />
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_favorite"
@@ -106,26 +96,54 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="25dp"
             android:contentDescription="@string/fab_desc"
-            android:src="@drawable/favorite_icon_blue"/>
+            android:src="@drawable/favorite_icon_blue" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/progressBar"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabs" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivUserProfile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:src="@tools:sample/avatars" />
 
-        <LinearLayout
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/progressBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <include layout="@layout/item_detail_shimmer"/>
-        </LinearLayout>
-    </com.facebook.shimmer.ShimmerFrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_detail_shimmer"/>
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

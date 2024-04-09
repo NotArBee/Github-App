@@ -1,6 +1,7 @@
 package com.ardev.githubapp.ui.activity.detail
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -39,8 +40,84 @@ class DetailUserActivity : AppCompatActivity() {
         }
 
         @Suppress("DEPRECATION")
-        val user = intent.getParcelableExtra<ItemsItem>(MainActivity.EXTRA_DATA) as ItemsItem
+        val user: Parcelable? = intent.getParcelableExtra(MainActivity.EXTRA_DATA)
+        if (user is ItemsItem) {
+            handleItemsItem(user)
+        } else if (user is FavoriteUser) {
+            handleFavoriteUser(user)
+        } else {
+            println("Data Kosong")
+        }
 
+    }
+
+    private fun handleFavoriteUser(user: FavoriteUser) {
+        userDetailViewModel = obtainViewModel(this)
+
+        val sectionPagerAdapter = SectionPagerAdapter(this)
+        val viewPager: ViewPager2 = binding.viewPager
+
+        sectionPagerAdapter.username = user.login
+
+        viewPager.adapter = sectionPagerAdapter
+
+        val tabs: TabLayout = binding.tabs
+        TabLayoutMediator(tabs, viewPager) { tab, position ->
+            tab.text = resources.getString(TAB_TITLES[position])
+        }.attach()
+
+        userDetailViewModel.detailUser.observe(this) { userDetail ->
+            setUserData(userDetail)
+        }
+
+        userDetailViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+
+        userDetailViewModel.showUserDetail(user.login)
+
+        favoriteUser = FavoriteUser(user.login, user.avatarUrl)
+
+        userDetailViewModel.getFavoriteUser().observe(this) {
+            isFavorite = it.contains(favoriteUser)
+            if (isFavorite) {
+                @Suppress("DEPRECATION")
+                binding.fabFavorite.setImageDrawable(resources.getDrawable(R.drawable.favorite_icon_blue))
+            } else {
+                @Suppress("DEPRECATION")
+                binding.fabFavorite.setImageDrawable(resources.getDrawable(R.drawable.favorite_icon_notfill))
+            }
+
+        }
+
+        binding.fabFavorite.setOnClickListener {
+            if (isFavorite) {
+                userDetailViewModel.delete(favoriteUser!!)
+                Snackbar.make(
+                    binding.root,
+                    StringBuilder(user.login + " ").append(resources.getString(R.string.deleteDatabase)),
+                    Snackbar.LENGTH_LONG
+                ).setAction(
+                    resources.getString(R.string.undo)
+                ) {
+                    userDetailViewModel.insert(favoriteUser!!)
+                }.show()
+            } else {
+                userDetailViewModel.insert(favoriteUser!!)
+                Snackbar.make(
+                    binding.root,
+                    StringBuilder(user.login + " ").append(resources.getString(R.string.insertDatabase)),
+                    Snackbar.LENGTH_LONG
+                ).setAction(
+                    resources.getString(R.string.undo)
+                ) {
+                    userDetailViewModel.delete(favoriteUser!!)
+                }.show()
+            }
+        }
+    }
+
+    private fun handleItemsItem(user: ItemsItem) {
         userDetailViewModel = obtainViewModel(this)
 
         val sectionPagerAdapter = SectionPagerAdapter(this)
@@ -86,10 +163,10 @@ class DetailUserActivity : AppCompatActivity() {
                     binding.root,
                     StringBuilder(user.login + " ").append(resources.getString(R.string.deleteDatabase)),
                     Snackbar.LENGTH_LONG
-                    ).setAction(
-                        resources.getString(R.string.undo)
-                    ) {
-                        userDetailViewModel.insert(favoriteUser!!)
+                ).setAction(
+                    resources.getString(R.string.undo)
+                ) {
+                    userDetailViewModel.insert(favoriteUser!!)
                 }.show()
             } else {
                 userDetailViewModel.insert(favoriteUser!!)
@@ -107,12 +184,13 @@ class DetailUserActivity : AppCompatActivity() {
     }
 
     private fun setUserData(user: DetailUserResponse) {
+        val userNickname = user.name
+        supportActionBar?.title = userNickname
         binding.apply {
             Glide.with(this@DetailUserActivity).load(user.avatarUrl).into(ivUserProfile)
             tvDetailUserName.text = user.login
-            tvDetailRealName.text = user.name
-            tvFollowers.text = "${user.followers.toString()} Followers"
-            tvFollowing.text = "${user.following.toString()} Following"
+            tvFollowers.text = user.followers.toString()
+            tvFollowing.text = user.following.toString()
         }
     }
 

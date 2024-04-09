@@ -13,4 +13,7 @@
     <string name="insertDatabase">Has been add to your favorite user</string>
     <string name="deleteDatabase">Has been delete in your favorite user</string>
     <string name="undo">Undo</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
 </resources>

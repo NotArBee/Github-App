@@ -12,5 +12,15 @@ class FavoriteUserViewModel(application: Application) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    fun getAllFavoriteUsers(): LiveData<List<FavoriteUser>> = mFavoriteUserRepository.getAllFavoriteUsers()
+    fun getAllFavoriteUsers(): LiveData<List<FavoriteUser>> {
+        showLoading(true)
+        return mFavoriteUserRepository.getAllFavoriteUsers().apply {
+            observeForever {
+                showLoading(false)
+            }
+        }
+    }
+    private fun showLoading(isLoading: Boolean) {
+        _isLoading.value = isLoading
+    }
 }

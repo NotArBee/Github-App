@@ -19,16 +19,10 @@ abstract class FavoriteUserRoomDatabase : RoomDatabase() {
                 synchronized(FavoriteUserRoomDatabase::class.java) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
                         FavoriteUserRoomDatabase::class.java, "favoriteUser_database")
-                        .fallbackToDestructiveMigration()
                         .build()
                 }
             }
             return  INSTANCE as FavoriteUserRoomDatabase
-        }
-
-        fun clearDatabase(context: Context) {
-            INSTANCE = null
-            context.deleteDatabase("favoriteUser_database")
         }
     }
 }

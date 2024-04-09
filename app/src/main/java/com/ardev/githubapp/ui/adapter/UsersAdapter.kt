@@ -1,17 +1,12 @@
 package com.ardev.githubapp.ui.adapter
 
-import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ardev.githubapp.data.response.ItemsItem
 import com.ardev.githubapp.databinding.UserCardBinding
-import com.ardev.githubapp.ui.activity.detail.DetailUserActivity
-import com.ardev.githubapp.ui.activity.main.MainActivity
 import com.bumptech.glide.Glide
 
 class UsersAdapter : ListAdapter<ItemsItem, UsersAdapter.MyViewHolder>(DIFF_CALLBACK) {

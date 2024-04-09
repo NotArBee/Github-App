@@ -13,6 +13,9 @@
         android:theme="@style/Theme.GithubApp"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.Setting.SettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.favoriteuser.FavoriteUserActivity"
             android:exported="false" />
         <activity

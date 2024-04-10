@@ -108,12 +108,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setGithubUsersData(users: List<ItemsItem>) {
-        val listUser = ArrayList<ItemsItem>()
-        for (i in users) {
-            listUser.clear()
-            listUser.addAll(users)
-        }
-
         val adapter = UsersAdapter()
         adapter.submitList(users)
         binding.rvUser.adapter = adapter

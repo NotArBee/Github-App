@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.ardev.githubapp.databinding.FragmentFollowBinding
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ardev.githubapp.ui.adapter.ListFollowAdapter
 import com.ardev.githubapp.ui.activity.detail.DetailViewModel
@@ -44,7 +45,11 @@ class FollowFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[DetailViewModel::class.java]
 
-        binding.rvFollow.layoutManager = LinearLayoutManager(requireActivity())
+        val layoutManager = LinearLayoutManager(requireActivity())
+        binding.rvFollow.layoutManager = layoutManager
+        binding.rvFollow.setHasFixedSize(true)
+        val itemDecoration = DividerItemDecoration(requireActivity(), layoutManager.orientation)
+        binding.rvFollow.addItemDecoration(itemDecoration)
 
         viewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
@@ -58,8 +63,7 @@ class FollowFragment : Fragment() {
 
         viewModel.listFollow.observe(viewLifecycleOwner) { listFollow ->
             listFollow?.let { users ->
-                binding.rvFollow.layoutManager = LinearLayoutManager(requireActivity())
-                val adapter = ListFollowAdapter(users)
+                val adapter = ListFollowAdapter(listFollow)
                 binding.rvFollow.adapter = adapter
             }
         }

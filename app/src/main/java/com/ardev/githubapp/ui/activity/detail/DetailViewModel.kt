@@ -22,6 +22,9 @@ class DetailViewModel(application: Application) : ViewModel() {
     private val _detailUser = MutableLiveData<DetailUserResponse>()
     val detailUser: LiveData<DetailUserResponse> = _detailUser
 
+    private val _isLoadingFollow = MutableLiveData<Boolean>()
+    val isLoadingFollow: LiveData<Boolean> = _isLoadingFollow
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -70,14 +73,14 @@ class DetailViewModel(application: Application) : ViewModel() {
     }
 
     fun getFollowersList(username: String) {
-        _isLoading.value = true
+        _isLoadingFollow.value = true
         val client = ApiConfig.getApiService().getUserFollowers(username)
         client.enqueue(object : Callback<List<DetailUserResponse>> {
             override fun onResponse(
                 call: Call<List<DetailUserResponse>>,
                 response: Response<List<DetailUserResponse>>
             ) {
-                _isLoading.value = false
+                _isLoadingFollow.value = false
                 if (response.isSuccessful) {
                     _listFollow.value = response.body()
                 } else {
@@ -86,21 +89,21 @@ class DetailViewModel(application: Application) : ViewModel() {
             }
 
             override fun onFailure(call: Call<List<DetailUserResponse>>, t: Throwable) {
-                _isLoading.value = false
+                _isLoadingFollow.value = false
                 Log.e(TAG, "onFailure : ${t.message.toString()}")
             }
         })
     }
 
     fun getFollowingList(username: String) {
-        _isLoading.value = true
+        _isLoadingFollow.value = true
         val client = ApiConfig.getApiService().getUserFollowing(username)
         client.enqueue(object : Callback<List<DetailUserResponse>> {
             override fun onResponse(
                 call: Call<List<DetailUserResponse>>,
                 response: Response<List<DetailUserResponse>>
             ) {
-                _isLoading.value = false
+                _isLoadingFollow.value = false
                 if (response.isSuccessful) {
                     _listFollow.value = response.body()
                 } else {
@@ -109,7 +112,7 @@ class DetailViewModel(application: Application) : ViewModel() {
             }
 
             override fun onFailure(call: Call<List<DetailUserResponse>>, t: Throwable) {
-                _isLoading.value = false
+                _isLoadingFollow.value = false
                 Log.e(TAG, "onFailure : ${t.message.toString()}")
             }
         })

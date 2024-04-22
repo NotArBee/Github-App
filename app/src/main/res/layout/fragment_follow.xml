@@ -20,7 +20,7 @@
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="300dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,19 +38,6 @@
             <include layout="@layout/item_shimmer" />
 
             <include layout="@layout/item_shimmer" />
-
-            <include layout="@layout/item_shimmer" />
-
-            <include layout="@layout/item_shimmer" />
-
-            <include layout="@layout/item_shimmer" />
-
-            <include layout="@layout/item_shimmer" />
-
-            <include layout="@layout/item_shimmer" />
-
-            <include layout="@layout/item_shimmer" />
-
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
 

@@ -51,7 +51,7 @@ class FollowFragment : Fragment() {
         val itemDecoration = DividerItemDecoration(requireActivity(), layoutManager.orientation)
         binding.rvFollow.addItemDecoration(itemDecoration)
 
-        viewModel.isLoading.observe(viewLifecycleOwner) {
+        viewModel.isLoadingFollow.observe(viewLifecycleOwner) {
             showLoading(it)
         }
 
